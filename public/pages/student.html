@@ -1,0 +1,304 @@
+<h3>学生管理</h3>
+<link rel="stylesheet" href="../css/style.css">
+<div>
+    <input type="text" name="id" placeholder="请输入要查询的学生id" class="studentId">
+    <input type="text" name="gender" placeholder="请输入要查询的性别" class="gender">
+    <input type="submit" value="查找" class="find">
+</div>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>编号</th>
+            <th>姓名</th>
+            <th>性别</th>
+            <th>生日</th>
+            <th>班级</th>
+        </tr>
+    </thead>
+    <tbody>
+        
+    </tbody>
+</table>
+<table class="table2 table-bordered" style="display:none">
+    <tbody>
+        <tr>
+            <th>编号</th>
+            <th>姓名</th>
+            <th>性别</th>
+            <th>生日</th>
+            <th>班级</th>
+        </tr>
+    </tbody>
+</table>
+<div class="opts">
+    <button class="btn btn-danger btn-sm">修改</button>
+    <button class="btn btn-danger btn-sm">添加</button> 
+    <button class="btn btn-danger btn-sm">删除</button>
+</div>
+<!--修改 框 -->
+<div class="modal fade" tabindex="-1" role="dialog" id="modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">修改学生信息</h4>
+      </div>
+      <div class="modal-body">
+          <form action="" class="studentForm">
+             <input type="hidden" name="id"> 
+             姓名 <input type="text" name="name"><br>
+             性别 <input type="text" name="gender"><br>
+             生日 <input type="text" name="birth"><br>
+             班级 <input type="text" name="class_id" ><br>
+          </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">退出</button>
+        <button type="button" class="btn btn-primary updBtn" >保存</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!--添加框  -->
+<div class="modal fade" tabindex="-1" role="dialog" id="modal2">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header2">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title2">添加学生信息</h4>
+      </div>
+      <div class="modal-body">
+          <form action="" class="studentForm2">
+             <input type="hidden" name="id"> 
+             姓名 <input type="text" name="name"><br>
+             性别 <input type="text" name="gender"><br>
+             生日 <input type="text" name="birth"><br>
+             班级 <input type="text" name="class_id" ><br>
+          </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">退出</button>
+        <button type="button" class="btn btn-primary updBtn2" >保存</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!--删除框  -->
+<div class="modal fade" tabindex="-1" role="dialog" id="modal3">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header2">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title2">添加学生信息</h4>
+      </div>
+      <div class="modal-body">
+          <form action="" class="studentForm2">
+             <input type="hidden" name="id"> 
+             姓名 <input type="text" name="name"><br>
+             性别 <input type="text" name="gender"><br>
+             生日 <input type="text" name="birth"><br>
+             班级 <input type="text" name="class_id" ><br>
+          </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">退出</button>
+        <button type="button" class="btn btn-primary updBtn3" >确认删除</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<script>
+    $(function(){
+        //查询所有
+        $.getJSON('student/findAll',function(data){
+            data.forEach(function(item){
+                var birth = item.birth?item.birth.slice(0,item.birth.indexOf('T')):'';
+                var newTr= $('<tr>'
+                    +'<td><input type="checkbox" value="'+item.id+'"></td>'
+                    +'<td>'+item.name+'</td>'
+                    +'<td>'+item.gender+'</td>'
+                    +'<td>'+birth+'</td>'
+                    +'<td>'+item.class_id+'</td>'
+                    +'</tr>');
+                $('tbody').append(newTr);
+            });
+        });
+        //id查询
+       
+        //确认添加
+        $('.updBtn2').off();
+        $('.updBtn2').on('click',function(){
+            var id = $('.studentForm2 input[name=id]').val();
+            var name = $('.studentForm2 input[name=name]').val();
+            var gender = $('.studentForm2 input[name=gender]').val();
+            var birth = $('.studentForm2 input[name=birth]').val();
+            var class_id = $('.studentForm2 input[name=class_id]').val();
+            var newStudent={
+                id:id,
+                name:name,
+                gender:gender,
+                birth:birth,
+                class_id:class_id
+            }
+            $.ajax('student/save',{
+                'data':newStudent,
+                'method':'POST',
+                'content-Type':'application/json',
+                success:function(data){
+                    $('.modal').modal('hide');
+                    $('.navleft dd').eq(0).trigger('click');
+                }
+            })
+        });
+        //确认修改
+        $('.updBtn').off();
+        $('.updBtn').on('click',function(){
+            var id =$('.studentForm input[name=id]').val();
+            var name =$('.studentForm input[name=name]').val();
+            var gender=$('.studentForm input[name=gender]').val();
+            var birth =$('.studentForm input[name=birth]').val();
+            var class_id =$('.studentForm input[name=class_id]').val();
+            var newStudent={
+                    id:id,
+                    name:name,
+                    gender:gender,
+                    birth:birth,
+                    class_id:class_id
+                }
+            $.ajax('student/update',{
+                'data':newStudent,
+                'method':'POST',
+                'content-Type':'application/json',
+                success:function(data){
+                    // console.log(data);
+                    $('.modal').modal('hide');
+                    $('.navleft dd').eq(0).trigger('click');
+                }
+            });
+        });
+        //确认删除
+        // $('.updBtn3').off();
+        // $('.updBtn3').on('click',function(){
+        //     var id =$('.studentForm input[name=id]').val();
+        //     var name =$('.studentForm input[name=name]').val();
+        //     var gender=$('.studentForm input[name=gender]').val();
+        //     var birth =$('.studentForm input[name=birth]').val();
+        //     var class_id =$('.studentForm input[name=class_id]').val();
+        //     var newStudent={
+        //             id:id,
+        //             name:name,
+        //             gender:gender,
+        //             birth:birth,
+        //             class_id:class_id
+        //         }
+        //     $.ajax('student/batchDelete',{
+        //         'data':newStudent,
+        //         'method':'POST',
+        //         'content-Type':'application/json',
+        //         success:function(data){
+        //             // console.log(data);
+        //             $('.modal').modal('hide');
+        //             $('.navleft dd').eq(0).trigger('click');
+        //         }
+        //     });
+        // });    
+        //为修改按钮绑定事件
+        $('.opts button').eq(0).off();
+        $('.opts button').eq(0).on('click',function(){
+            var ids=$('tbody input:checkbox:checked').toArray().map(function(item){
+                return item.value;
+                
+            });
+            if(ids.length>0){
+                var id = ids[0];
+                $.getJSON('student/findById?id='+id,function(data){
+                    var birth = data[0].birth?data[0].birth.slice(0,data[0].birth.indexOf('T')):'';
+                    console.log("元素",$('.studentForm input[name=id]'));
+                    $('.studentForm input[name=id]').val(data[0].id);
+                    $('.studentForm input[name=name]').val(data[0].name);
+                    $('.studentForm input[name=gender]').val(data[0].gender);
+                    $('.studentForm input[name=birth]').val(birth);
+                    $('.studentForm input[name=class_id]').val(data[0].class_id);
+                    //显示模态框
+                    $('#modal').modal('show');
+                });
+            }else{
+                alert('请选择你要修改的信息');
+            }
+        });
+        //为添加按钮绑定事件
+        $('.opts button').eq(1).off();
+        $('.opts button').eq(1).on('click',function(){
+            var ids=$('tbody input:checkbox:checked').toArray().map(function(item){
+                return item.value;
+            });
+            if(ids.length>0){
+                var id  = ids[0];
+                $.getJSON('student/findById='+id,function(data){
+                    //隐藏按钮
+                    $('.opts button').eq(1).off();
+                });
+            }else{
+                $('#modal2').modal('show');
+            }
+        });
+        //为删除绑定事件
+        $('.opts button').eq(2).off();
+        $('.opts button').eq(2).on('click',function(){
+            var ids=$('tbody input:checkbox:checked').toArray().map(function(item){
+                return item.value;
+            });
+            if(ids.length>0){
+                $.post('student/batchDelete',{
+                   ids:ids
+                },function(data){
+                    // console.log(data);
+                    $('.navleft dd').eq(0).trigger('click');
+                });
+            }else{
+                alert('请选中要删除的项');
+            }
+        });
+        //id查询
+         $('.find').click(function(){
+            var id =$('.studentId').val();
+            $(".table2 tbody tr").remove();
+            $.getJSON('student/findById?id='+id,function(data){
+                $('.table').css('display','none');
+                $('.table2').css('display','block')
+                data.forEach(function(item){
+                    var birth = item.birth?item.birth.slice(0,item.birth.indexOf('T')):'';
+                    var newTr= $('<tr>'
+                        +'<td><input type="checkbox" value="'+item.id+'"></td>'
+                        +'<td>'+item.name+'</td>'
+                        +'<td>'+item.gender+'</td>'
+                        +'<td>'+birth+'</td>'
+                        +'<td>'+item.class_id+'</td>'
+                        +'</tr>');
+                    $('.table2 tbody').append(newTr);
+                });
+            });
+        });
+        //模糊查询
+        $('.find').click(function(){
+            // var name = $('.studentId').val();
+            var keys= $('.gender').val();
+            $('.table2 tbody tr:eq(1)').remove();
+            $.getJSON('student/query?name='+keys,function(data){
+                $('.table').css('display','none');
+                $('.table2').css('display','block');
+                data.forEach(function(item){
+                    var birth = item.birth?item.birth.slice(0,item.birth.indexOf('T')):'';
+                    var newTr= $('<tr>'
+                        +'<td><input type="checkbox" value="'+item.id+'"></td>'
+                        +'<td>'+item.name+'</td>'
+                        +'<td>'+item.gender+'</td>'
+                        +'<td>'+birth+'</td>'
+                        +'<td>'+item.class_id+'</td>'
+                        +'</tr>');
+                    $('.table2 tbody').append(newTr); 
+                });
+            });
+        });
+    });
+</script>

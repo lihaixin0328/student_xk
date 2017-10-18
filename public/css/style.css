@@ -1,0 +1,43 @@
+h1,h2,h3,h4,ul,dl,p{margin: 0}
+header.header{
+  border-bottom: 2px double #ccc;
+  height: 100px;
+}
+article.container{
+  overflow: hidden;
+}
+section.navleft{
+  float: left;
+  width: 100px;
+  border-right: 1px solid #ccc;
+}
+section.content{
+  margin-left: 165px;
+  padding: 10px;
+  overflow-y:  scroll;
+}
+footer.footer{
+  border-top: 1px solid #ccc;
+  height: 50px;
+ /* float: left; */
+}
+.modal2{
+  float: left;
+  position: relative;
+}
+.table2{
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border-spacing: 0;
+  border-collapse: collapse;
+  border: 1px solid #ccc;
+}
+.table2 tr{
+  width: 944px;
+}
+.table2 td{
+  padding: 10px 77px;
+
+}

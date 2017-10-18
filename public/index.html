@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>学生选课系统</title>
+    <!--jquery  -->
+    <script src="frameworks/jquery-2.1.4/jquery.min.js">
+
+    </script>
+    <!--bootstrap  -->
+    <script src="frameworks/bootstrap-3.3.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="frameworks/bootstrap-3.3.0/css/bootstrap.min.css">
+    <!--自定义样式  -->
+    <link rel="stylesheet" href="css/style.css">
+    <script>
+        function initStyle(){
+            var height = $(document).height();
+            var ch  = height-130;
+            $('.content').css('height',ch+'px');
+            $('.navleft').css('height',ch+'px');
+        }
+        $(function(){
+            //初始化页面
+            initStyle();
+            $('.navleft dd').off();
+            $('.navleft dd').on('click',function(){
+                var page =$(this).attr('page');
+                $('section.content').load(page);
+            });
+            //默认触发
+            $('.navleft dd').eq(0).trigger('click');
+        });
+    </script>
+</head>
+<body>
+    <header class="header">
+        <h2>学生选课系统</h2>
+        <!-- <p>系统正在测试中</p> -->
+    </header>
+    <article class="container">
+        <!--左侧导航  -->
+        <section class="navleft">
+            <dl>
+                <dt>选课系统</dt>
+                <dd page="pages/student.html"><a href="javascript:void(0)">学生管理</a></dd>
+                <dd page="pages/course.html"><a href="javascript:void(0)">课程管理</a></dd>
+                <dd page="pages/class.html"><a href="javascript:void(0)">班级管理</a></dd>
+                <dd page="pages/chooseCourse.html"><a href="javascript:void(0)">选课管理</a></dd>
+            </dl>
+        </section>
+        <!--右侧内容区  -->
+        <section class="content">
+
+        </section>
+    </article>
+    <footer class="footer">
+        <p>copyright:xxx</p>
+        <address>江苏省苏州市昆山市</address>
+    </footer>
+</body>
+</html>
